@@ -1,0 +1,218 @@
+CREATE DATABASE finalAssingment;
+USE finalassingment;
+CREATE TABLE music(
+id_music int primary key NOT NULL,
+name_music varchar(50) NOT NULL,
+id_gender INT NOT NULL,
+id_artist INT,
+id_band INT,
+id_produtora INT,
+id_playlist INT);
+
+drop table music;
+CREATE TABLE gender(
+id_gender INT PRIMARY KEY NOT NULL,
+name_gender VARCHAR(20) NOT NULL);
+
+CREATE TABLE artist(
+id_artist INT PRIMARY KEY NOT NULL,
+name_artist VARCHAR(50));
+
+CREATE TABLE band(
+id_band INT PRIMARY KEY NOT NULL ,
+name_band VARCHAR(20) NOT NULL,
+num_members INT NOT NULL,
+num_instruments INT NOT NULL);
+
+
+CREATE TABLE album(
+id_album int primary key NOT NULL,
+name_album varchar(50) NOT NULL,
+id_artist INT,
+id_band INT,
+id_produtora INT null);
+drop table album;
+
+CREATE TABLE produtora(
+id_produtora INT PRIMARY KEY NOT NULL,
+name_produtora VARCHAR(20)
+);
+
+CREATE TABLE playlist(
+id_playlist INT PRIMARY KEY NOT NULL,
+name_playlist VARCHAR(20)
+);
+
+select*from album;
+select*from artist;
+select*from band;
+select*from gender;
+select*from music;
+select*from playlist;
+select*from produtora;
+drop table music;
+alter table music add constraint fk_music_gender foreign key (id_gender) references gender(id_gender)
+on delete restrict;
+select*from gender;
+
+alter table music add constraint fk_music_artist foreign key (id_artist) references artist(id_artist)
+on delete cascade;
+
+/*ERROR*/alter table music add constraint fk_band_music foreign key (id_band) references band(id_band)
+on delete cascade;
+
+alter table music add constraint fk_music_gender foreign key (id_produtora) references produtora(id_produtora)
+on delete cascade;
+
+alter table music add constraint fk_music_playlist foreign key (id_playlist) references playlist(id_playlist)
+on delete cascade;
+
+alter table album add constraint fk_album_artist foreign key (id_artist) references artist(id_artist)
+on delete cascade;
+
+alter table album add constraint fk_album_band foreign key (id_band) references band(id_band)
+on delete cascade;
+
+/*ERROR*/alter table album add constraint fk_album_produtora foreign key (id_produtora) references produtora(id_produtora)
+on delete cascade;
+select*from produtora;
+
+select name_music, name_gender
+from music inner join gender on gender.id_gender= music.id_gender;
+
+select name_music, name_artist
+from music m inner join artist a on a.id_artist= m.id_artist;
+
+select name_music, name_band
+from music m inner join band b on b.id_band=m.id_band;
+
+select name_album, name_artist
+from album inner join artist a on a.id_artist= album.id_artist;
+
+select name_album, name_band
+from album a inner join band b on b.id_band=a.id_band;
+
+/*i chose only use inner join because i don't want show nulls */
+
+select name_music from music order by name_music desc;
+select name_music from music order by name_music asc;
+select name_music from music where id_gender = '8' order by id_gender;
+select name_album from album where id_band ='4'  order by id_band;
+select name_artist from artist order by id_artist desc;
+
+select name_band from band group by name_band;
+select name_artist from artist group by name_artist;
+select name_gender from gender group by id_gender desc;
+select name_playlist from playlist group by name_playlist;
+select name_playlist from playlist group by id_playlist desc;
+
+select name_playlist, name_music from playlist p
+inner join music m on p.id_playlist = m.id_playlist
+order by name_playlist desc;
+
+select id_music, name_gender from music m
+inner join gender g on m.id_gender = g.id_gender
+order by id_music asc;
+
+select name_music, name_band from music m
+inner join band b on m.id_band = b.id_band
+order by id_music asc;
+
+select name_album, name_band from album a
+inner join band B on a.id_band= b.id_band
+order by id_album asc;
+
+select name_artist, id_music from music m
+inner join artist a on m.id_artist= a.id_artist
+order by id_music asc;
+
+select sum(id_music) from music;
+select round(avg(id_artist)) from artist;
+select sum(num_members) from band;
+select sum(num_instruments) from band;
+select round(avg(num_members)) from band;
+select round(avg(num_instruments)) from band;
+select sum(id_gender) from gender;
+
+create view musics_tipe_1
+as select name_music from music
+where id_gender like '1';
+
+select*from musics_tipe_1;
+
+create view musics_tipe_8
+as select name_music from music
+where id_gender like '8';
+
+select*from musics_tipe_8;
+
+create view musics_tipe_2
+as select name_music from music
+where id_gender like '2';
+
+select*from musics_tipe_2;
+
+create view musics_tipe_11
+as select name_music from music
+where id_gender like '11';
+
+select*from musics_tipe_11;
+
+create view musics_tipe_7
+as select name_music from music
+where id_gender like '7';
+
+select*from musics_tipe_7;
+
+start transaction;
+
+INSERT INTO gender VALUES ('16', 'metalcore');
+SAVEPOINT gendermetalcore;
+ROLLBACK to gendermetalcore;
+
+INSERT INTO gender VALUES ('17','emo');
+SAVEPOINT genderEmo;
+ ROLLBACK TO genderEmo;
+
+INSERT INTO gender VALUES ('18','indie');
+SAVEPOINT genderIndie;
+ROLLBACK TO genderIndie;
+
+
+INSERT INTO gender VALUES ('19','RAPOP');
+SAVEPOINT  genderRapop;
+ROLLBACK TO genderRapop;
+
+INSERT INTO artist VALUES ('16', 'Lil Peep');
+SAVEPOINT artist16;
+ROLLBACK TO ARTIST16;
+
+CREATE USER vitor@localhost;
+CREATE USER lucas@localhost;
+CREATE USER mariana@localhost;
+
+DROP USER vitor@localhost;
+DROP USER lucas@localhost;
+DROP USER mariana@localhost;
+
+GRANT ALL ON finalassingment.musics_tipe_1 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_8 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_2 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_11 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_7 TO vitor@localhost;
+
+GRANT INSERT ON finalassingment.music to mariana@localhost;
+GRANT INSERT ON finalassingment.artist to mariana@localhost;
+GRANT INSERT ON finalassingment.gender to mariana@localhost;
+GRANT INSERT ON finalassingment.band to mariana@localhost;
+GRANT INSERT ON finalassingment.playlist to mariana@localhost;
+GRANT INSERT ON finalassingment.produtora to mariana@localhost;
+GRANT INSERT ON finalassingment.album to mariana@localhost;
+
+GRANT SELECT ON finalassingment.music to lucas@localhost;
+GRANT SELECT ON finalassingment.artist to lucas@localhost;
+GRANT SELECT ON finalassingment.gender to lucas@localhost;
+GRANT SELECT ON finalassingment.band to lucas@localhost;
+GRANT SELECT ON finalassingment.playlist to lucas@localhost;
+GRANT SELECT ON finalassingment.produtora to lucas@localhost;
+GRANT SELECT ON finalassingment.album to lucas@localhost;
