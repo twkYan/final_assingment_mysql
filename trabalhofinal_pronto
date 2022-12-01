@@ -1,0 +1,252 @@
+CREATE DATABASE finalAssingment;
+USE finalassingment;
+CREATE TABLE music(
+id_music int primary key NOT NULL,
+name_music varchar(50) NOT NULL,
+id_gender INT NOT NULL,
+id_artist INT,
+id_band INT,
+id_produtora INT,
+id_playlist INT);
+
+drop table music;
+CREATE TABLE gender(
+id_gender INT PRIMARY KEY NOT NULL,
+name_gender VARCHAR(20) NOT NULL);
+
+CREATE TABLE artist(
+id_artist INT PRIMARY KEY NOT NULL,
+name_artist VARCHAR(50));
+
+CREATE TABLE band(
+id_band INT PRIMARY KEY NOT NULL ,
+name_band VARCHAR(20) NOT NULL,
+num_members INT NOT NULL,
+num_instruments INT NOT NULL);
+
+
+CREATE TABLE album(
+id_album int primary key NOT NULL,
+name_album varchar(50) NOT NULL,
+id_artist INT,
+id_band INT,
+id_produtora INT null);
+drop table album;
+
+CREATE TABLE produtora(
+id_produtora INT PRIMARY KEY NOT NULL,
+name_produtora VARCHAR(20)
+);
+
+CREATE TABLE playlist(
+id_playlist INT PRIMARY KEY NOT NULL,
+name_playlist VARCHAR(20)
+);
+
+select*from album;
+select*from artist;
+select*from band;
+select*from gender;
+select*from music;
+select*from playlist;
+select*from produtora;
+drop table music;
+
+
+//cria uma restrição onde a fk "id_gender" da table "music" referencia "id_gender" na table "gender", 
+//on delete restrict pois ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha
+alter table music add constraint fk_music_gender foreign key (id_gender) references gender(id_gender)
+on delete restrict;
+
+
+//cria uma restrição onde a fk "id_artist" da table "music" referencia "id_artist" na table "artist", 
+//on delete restrict pis ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha
+
+alter table music add constraint fk_music_artist foreign key (id_artist) references artist(id_artist)
+on delete restrict;
+//cria uma restrição onde a fk "id_band" da table "music" referencia "id_band" na table "band", 
+//on delete restrict pois ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha.
+/*ERROR*/alter table music add constraint fk_band_music foreign key (id_band) references band(id_band)
+on delete restrict;
+//cria uma restrição onde a fk "id_produtora" da table "music" referencia "id_produtora" na table "produtora", 
+//on delete restrict pois ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha.
+alter table music add constraint fk_music_produtora foreign key (id_produtora) references produtora(id_produtora)
+on delete restrict;
+
+//cria uma restrição onde a fk "id_playlist" da table "music" referencia "id_playlist" na table "playlist", 
+//on delete restrict pois ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha.
+alter table music add constraint fk_music_playlist foreign key (id_playlist) references playlist(id_playlist)
+on delete restrict;
+
+//cria uma restrição onde a fk "id_artist" da table "album" referencia "id_artist" na table "artist", 
+//on delete restrict pis ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha
+alter table album add constraint fk_album_artist foreign key (id_artist) references artist(id_artist)
+on delete restrict;
+
+//cria uma restrição onde a fk "id_band" da table "album" referencia "id_band" na table "band", 
+//on delete restrict pois ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha.
+alter table album add constraint fk_album_band foreign key (id_band) references band(id_band)
+on delete restrict;
+
+//cria uma restrição onde a fk "id_produtora" da table "album" referencia "id_produtora" na table "produtora", 
+//on delete restrict pois ela Impede que ocorra a exclusão ou a atualização de um registro da tabela pai, caso ainda hajam registros na tabela filha.
+/*ERROR*/alter table album add constraint fk_album_produtora foreign key (id_produtora) references produtora(id_produtora)
+on delete restrict;
+select*from produtora;
+
+select name_music, name_gender
+from music inner join gender on gender.id_gender= music.id_gender;
+
+select name_music, name_artist
+from music m inner join artist a on a.id_artist= m.id_artist;
+
+select name_music, name_band
+from music m inner join band b on b.id_band=m.id_band;
+
+select name_album, name_artist
+from album inner join artist a on a.id_artist= album.id_artist;
+
+select name_album, name_band
+from album a inner join band b on b.id_band=a.id_band;
+
+/*i chose only use inner join because i don't want show nulls */
+
+select name_music from music order by name_music desc; /* seleciona os nomes das musicas e ordena em ordem decrescente */
+select name_music from music order by name_music asc;  /* seleciona os nomes das musicas e oredena em ordem crescente */
+select name_music from music where id_gender = '8' order by id_gender; /*seleciona todas as musicas onde a fk "id_gender" for igual a 8 */
+select name_album from album where id_band ='4'  order by id_band; /*seleciona todas as musicas onde a fk "id_band" for igual a 4*/
+select name_artist from artist order by id_artist desc;/*mostra o nome dos artistas da tabela " artistas" em ordem decrescente*/
+
+select name_band from band group by id_band; /*agrupa todos os nomes de pandas por seu id correspondente*/
+select name_artist from artist group by id_artist;/*agrupa todos os nomes de artistas por seu id correspondente*/
+select name_gender from gender group by id_gender desc;/*agrupa todos os generos por seu id correspondente*/
+select name_playlist from playlist group by id_playlist; /*agrupa todas as playlists por seu id correspondente*/
+select name_album from playlist group by id_album desc;/*agrupa todos os albuns por seu id correspondente em ordem decrescente*/
+
+select name_playlist, name_music from playlist p
+inner join music m on p.id_playlist = m.id_playlist
+order by id_playlist desc;
+/*juntas as colunas "name_playlist" e "name_music" de suas tables correspondentes e ordena elas pelo "id_playlist" da tabela "playlist" em ordem decrescente*/
+
+select id_music, name_gender from music m
+inner join gender g on m.id_gender = g.id_gender
+order by id_music asc;
+/*junta as colunas "id_music" e "name_gender" de suas tables correspondentes e ordena pelo "id_music" em ordem crescente*/
+
+select name_music, name_band from music m
+inner join band b on m.id_band = b.id_band
+order by id_music asc;
+/*junta as colunas "name_music" e "name_band" de suas tabelas correspondentes e ordena por "id_music" em ordem crescente*/
+
+select name_album, name_band from album a
+inner join band B on a.id_band= b.id_band
+order by id_album asc;
+/*junta as colunas "name_album" e "name_band" de suas tabelas correspondentes e ordena pelo "id_album" de atabela album em ordem crescente*/
+
+select name_artist, id_music from music m
+inner join artist a on m.id_artist= a.id_artist
+order by id_music asc;
+/*junta as colunas name_artist e id_music de suas tabelas correspondentes e ordena elas pelo "id_music" da tabela music em ordem crescente */
+
+select sum(id_music) from music; /*soma todos ids da table "music"*/
+select round(avg(id_artist)) from artist;/*faz uma media dos ids da table "artist" a function"round" foi usado para tirar a virgula*/
+select sum(num_members) from band; /*soma os membros da table "band"*/
+select sum(num_instruments) from band; /*soma os instrumentos da table "band"*/
+select round(avg(num_members)) from band; /*faz uma media dos membros da table "band" a function"round" foi usado para tirar a virgula*/
+select round(avg(num_instruments)) from band; /*faz uma media dos instrumentos da table "band" a function"round" foi usado para tirar a virgula*/
+select sum(id_gender) from gender; /*somas os ids da table "gender"*/
+
+create view musics_tipe_1
+as select name_music from music
+where id_gender like '1';
+/*cria uma view de todas as musicas onde o id de genero é igual a 1*/
+
+select*from musics_tipe_1;
+
+create view musics_tipe_8
+as select name_music from music
+where id_gender like '8';
+/*cria uma view de todas as musicas onde o id de genero é igual a 8*/
+
+select*from musics_tipe_8;
+
+create view musics_tipe_2
+as select name_music from music
+where id_gender like '2';
+/*cria uma view de todas as musicas onde o id de genero é igual a 2*/
+
+select*from musics_tipe_2;
+
+create view musics_tipe_11
+as select name_music from music
+where id_gender like '11';
+/*cria uma view de todas as musicas onde o id de genero é igual a 11*/
+
+select*from musics_tipe_11;
+
+create view musics_tipe_7
+as select name_music from music
+where id_gender like '7';
+/*cria uma view de todas as musicas onde o id de genero é igual a 7*/
+
+select*from musics_tipe_7;
+
+start transaction; /* começa as transaçoes*/
+
+INSERT INTO gender VALUES ('16', 'metalcore');
+SAVEPOINT gendermetalcore;
+ROLLBACK to gendermetalcore;
+/*insere um valor a tabela "gender" com um save point e um roolback*/
+
+INSERT INTO gender VALUES ('17','emo');
+SAVEPOINT genderEmo;
+ ROLLBACK TO genderEmo;
+ /*insere um valor a tabela "gender" com um save point e um roolback*/
+
+INSERT INTO gender VALUES ('18','indie');
+SAVEPOINT genderIndie;
+ROLLBACK TO genderIndie;
+/*insere um valor a tabela 'gender" com um save point e um roolback*/
+
+INSERT INTO gender VALUES ('19','RAPOP');
+SAVEPOINT  genderRapop;
+ROLLBACK TO genderRapop;
+/*insere um valor a tabela "gender" com um save point e um roolback*/
+
+INSERT INTO artist VALUES ('16', 'Lil Peep');
+SAVEPOINT artist16;
+ROLLBACK TO ARTIST16;
+/*insere um valor a tabela "artist" com um save point e um roolback*/
+
+CREATE USER vitor@localhost;/*cria um user*/
+CREATE USER lucas@localhost;/*cria um user*/
+CREATE USER mariana@localhost;/*cria um user*/
+
+DROP USER vitor@localhost;/*para dropar um user caso de um bug*/
+DROP USER lucas@localhost;/*para dropar um user caso de um bug*/
+DROP USER mariana@localhost;/*par dropar um user caso de um bug*/
+
+GRANT ALL ON finalassingment.musics_tipe_1 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_8 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_2 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_11 TO vitor@localhost;
+GRANT ALL ON finalassingment.musics_tipe_7 TO vitor@localhost;
+/*garante a visao a penas as views por um usuario*/
+
+GRANT INSERT ON finalassingment.music to mariana@localhost;
+GRANT INSERT ON finalassingment.artist to mariana@localhost;
+GRANT INSERT ON finalassingment.gender to mariana@localhost;
+GRANT INSERT ON finalassingment.band to mariana@localhost;
+GRANT INSERT ON finalassingment.playlist to mariana@localhost;
+GRANT INSERT ON finalassingment.produtora to mariana@localhost;
+GRANT INSERT ON finalassingment.album to mariana@localhost;
+/*garante apenas inserir valores a qualquer table a um user*/
+
+GRANT SELECT ON finalassingment.music to lucas@localhost;
+GRANT SELECT ON finalassingment.artist to lucas@localhost;
+GRANT SELECT ON finalassingment.gender to lucas@localhost;
+GRANT SELECT ON finalassingment.band to lucas@localhost;
+GRANT SELECT ON finalassingment.playlist to lucas@localhost;
+GRANT SELECT ON finalassingment.produtora to lucas@localhost;
+GRANT SELECT ON finalassingment.album to lucas@localhost;
+/*garante apenas a visão de todas as tablesa a um user*/
