@@ -1,0 +1,8 @@
+use finalassingment;
+select*from musics_tipe_1;
+select*from musics_tipe_8;
+select*from musics_tipe_2;
+select*from musics_tipe_11;
+select*from musics_tipe_7;
+
+select*from music;
