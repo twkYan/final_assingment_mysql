@@ -1,0 +1,9 @@
+select*from album;
+select*from artist;
+select*from band;
+select*from gender;
+select*from music;
+select*from playlist;
+select*from produtora;
+
+INSERT INTO artist VAlUES ('211', 'david');
