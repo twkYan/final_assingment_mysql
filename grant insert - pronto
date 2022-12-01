@@ -1,0 +1,25 @@
+use finalassingment;
+
+INSERT INTO music VALUES 
+('24', 'not exist', '1', '2', '3', '4', '5');
+
+INSERT INTO gender VALUES ('60', 'kpop');
+
+INSERT INTO artist VALUES ('30', 'teto');
+
+INSERT INTO band VALUES ('30','BTS');
+
+INSERT INTO album VALUES ('40', 'fake', '1','2','3','4');
+
+INSERT INTO playlist VALUES ('111', 'aaaaaaa');
+
+INSERT INTO produtora VALUES ('69', 'jj johnson');
+ /*testa se o usuario que recebeu a funçao de apenas inserir valores consegue fazer isso*/
+select*from album;
+select*from artist;
+select*from band;
+select*from gender;
+select*from music;
+select*from playlist;
+select*from produtora;
+/*teste de erro*/
