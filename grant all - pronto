@@ -1,0 +1,9 @@
+use finalassingment;
+select*from musics_tipe_1;
+select*from musics_tipe_8;
+select*from musics_tipe_2;
+select*from musics_tipe_11;
+select*from musics_tipe_7;
+/*testes para o usuario que tem a função de ver apenas as views criadas*/
+select*from music;
+/*teste de erro*/
