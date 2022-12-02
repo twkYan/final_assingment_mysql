@@ -1,0 +1,18 @@
+id_music;name_musica;id_genero;id_artist;id_band;id_produtora;id_playlist
+1;zaubertrick;8;1;NULL;1;5
+2;der kommisar;8;7;NULL;3;5
+3;fly me to the moon;12;5;NULL;4;11
+4;im not engry anymore;2;NULL;1;10;8
+3;prom queen;2;NULL;12;13;3
+4;the call of the montains;13;NULL;15;12;5
+5;hear me now;9;2;NULL;14;15
+6;california dreamin;1;NULL;14;5;13
+7;blesse moi;1;NULL;5;2;5
+8;sad;7;6;NULL;9;7
+9;riptide;1;11;NULL;15;8
+10;time;2;8;NULL;9;14
+11;uma arlinda mulher;1;NULL;13;7;6
+12;good riddance;2;NULL;4;6;10
+13;baby;1;9;NULL;11;3
+14;oh juliana;4;14;NULL;7;15
+15;poupee russe;11;4;NULL;2;5
